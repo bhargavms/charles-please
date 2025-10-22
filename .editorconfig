@@ -1,0 +1,55 @@
+root = true
+
+[*.{kt,kts}]
+# Kotlin code style
+indent_style = space
+indent_size = 4
+max_line_length = 120
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# ktlint rules
+ktlint_standard_android-imports = disabled
+ktlint_standard_annotation = disabled
+ktlint_standard_comment-wrapping = disabled
+ktlint_standard_filename = disabled
+ktlint_standard_final-newline = enabled
+ktlint_standard_import-ordering = enabled
+ktlint_standard_indent = enabled
+ktlint_standard_max-line-length = enabled
+ktlint_standard_modifier-order = enabled
+ktlint_standard_no-blank-line-before-rbrace = enabled
+ktlint_standard_no-consecutive-blank-lines = enabled
+ktlint_standard_no-empty-file = enabled
+ktlint_standard_no-semi = enabled
+ktlint_standard_no-trailing-spaces = enabled
+ktlint_standard_no-unit-return = enabled
+ktlint_standard_no-unused-imports = enabled
+ktlint_standard_no-wildcard-imports = enabled
+ktlint_standard_package-name = enabled
+ktlint_standard_spacing = enabled
+ktlint_standard_string-template = enabled
+ktlint_standard_trailing-comma-on-call-site = enabled
+ktlint_standard_trailing-comma-on-declaration-site = enabled
+
+[*.{yml,yaml}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{json}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.{md}]
+indent_style = space
+indent_size = 2
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true

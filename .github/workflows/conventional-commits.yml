@@ -1,0 +1,129 @@
+name: Conventional Commits
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  conventional-commits:
+    name: Check Conventional Commits
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install commitizen
+        run: |
+          pip install commitizen
+
+      - name: Check PR title follows Conventional Commits
+        run: |
+          PR_TITLE="${{ github.event.pull_request.title }}"
+          echo "Checking PR title: $PR_TITLE"
+
+          # Use commitizen to validate PR title
+          echo "$PR_TITLE" | cz check --commit-msg-file - || {
+            echo "❌ PR title does not follow Conventional Commits format"
+            echo ""
+            echo "Expected format: <type>(<scope>): <subject>"
+            echo "Example: feat(proxy): add auto-discovery for Charles proxy"
+            echo ""
+            echo "See CONTRIBUTING.md for details"
+            exit 1
+          }
+
+          echo "✅ PR title follows Conventional Commits format"
+
+      - name: Check commit messages
+        run: |
+          echo "Checking commit messages for conventional commits format..."
+          echo ""
+
+          # Get the base and head SHA
+          BASE_SHA=${{ github.event.pull_request.base.sha }}
+          HEAD_SHA=${{ github.event.pull_request.head.sha }}
+
+          # Get all commit messages in the PR
+          git log --format=%H ${BASE_SHA}..${HEAD_SHA} | while read commit_sha; do
+            commit_msg=$(git log --format=%B -n 1 $commit_sha | head -n 1)
+            echo "Checking: $commit_msg"
+
+            # Use commitizen to validate each commit message
+            echo "$commit_msg" | cz check --commit-msg-file - || {
+              echo "❌ Invalid commit message: $commit_msg"
+              echo "   Commit SHA: $commit_sha"
+              echo ""
+              exit 1
+            }
+
+            echo "✅ Valid"
+            echo ""
+          done
+
+          if [ $? -eq 0 ]; then
+            echo "All commit messages follow the Conventional Commits specification! 🎉"
+          else
+            echo ""
+            echo "Some commit messages don't follow the Conventional Commits specification."
+            echo "Please see CONTRIBUTING.md for guidelines."
+            exit 1
+          fi
+
+      - name: Comment on PR (if check fails)
+        if: failure()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const message = `## ❌ Conventional Commits Check Failed
+
+            Your PR title or commit messages don't follow the [Conventional Commits](https://www.conventionalcommits.org/) specification.
+
+            ### Required Format
+
+            \`\`\`
+            <type>(<scope>): <subject>
+            \`\`\`
+
+            ### Valid Types
+            - \`feat\`: A new feature
+            - \`fix\`: A bug fix
+            - \`docs\`: Documentation changes
+            - \`style\`: Code style changes (formatting, etc.)
+            - \`refactor\`: Code refactoring
+            - \`perf\`: Performance improvements
+            - \`test\`: Test changes
+            - \`chore\`: Build process or auxiliary tool changes
+            - \`ci\`: CI configuration changes
+            - \`build\`: Build system changes
+
+            ### Common Scopes
+            - \`proxy\`, \`adb\`, \`network\`, \`task\`, \`plugin\`, \`docs\`, \`test\`
+
+            ### Examples
+            - \`feat(proxy): add auto-discovery for Charles proxy\`
+            - \`fix(adb): handle device connection errors\`
+            - \`docs(readme): update installation instructions\`
+
+            ### Subject Rules
+            - Use imperative, present tense: "add" not "added" or "adds"
+            - Don't capitalize the first letter
+            - No period (.) at the end
+            - Keep it under 50 characters
+
+            Please update your PR title and/or commit messages to follow this format.
+            See [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md#commit-messages) for more details.`;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: message
+            });

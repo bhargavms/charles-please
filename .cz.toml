@@ -1,0 +1,64 @@
+# Commitizen configuration for Conventional Commits
+# See: https://commitizen-tools.github.io/commitizen/
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "1.0.0"
+tag_format = "v$version"
+version_files = [
+    "build.gradle.kts:version = \"$version\""
+]
+
+# Allowed commit types
+[tool.commitizen.customize]
+message_template = "{{change_type}}{% if scope %}({{scope}}){% endif %}: {{message}}"
+schema = "<type>(<scope>): <subject>"
+schema_pattern = "^(feat|fix|docs|style|refactor|perf|test|chore|ci|build)(\\(\\w+\\))?: .+$"
+
+# Commit types with descriptions
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "change_type"
+message = "Select the type of change you are committing:"
+choices = [
+    {value = "feat", name = "feat: A new feature"},
+    {value = "fix", name = "fix: A bug fix"},
+    {value = "docs", name = "docs: Documentation only changes"},
+    {value = "style", name = "style: Code style changes (formatting, etc.)"},
+    {value = "refactor", name = "refactor: Code refactoring"},
+    {value = "perf", name = "perf: Performance improvements"},
+    {value = "test", name = "test: Adding or updating tests"},
+    {value = "chore", name = "chore: Build process or auxiliary tool changes"},
+    {value = "ci", name = "ci: CI configuration changes"},
+    {value = "build", name = "build: Build system changes"}
+]
+
+[[tool.commitizen.customize.questions]]
+type = "list"
+name = "scope"
+message = "Select the scope (optional):"
+choices = [
+    {value = "", name = "none"},
+    {value = "proxy", name = "proxy: Proxy configuration and application"},
+    {value = "adb", name = "adb: ADB command execution"},
+    {value = "network", name = "network: Network discovery and connectivity"},
+    {value = "task", name = "task: Gradle task implementations"},
+    {value = "plugin", name = "plugin: Plugin configuration and setup"},
+    {value = "docs", name = "docs: Documentation"},
+    {value = "test", name = "test: Test infrastructure"}
+]
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "message"
+message = "Write a short, imperative tense description:"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "body"
+message = "Provide additional contextual information (optional):"
+
+[[tool.commitizen.customize.questions]]
+type = "input"
+name = "footer"
+message = "Footer (e.g., 'Fixes #123', 'BREAKING CHANGE: ...') (optional):"

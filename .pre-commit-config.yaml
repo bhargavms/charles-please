@@ -1,0 +1,53 @@
+default_stages: [pre-commit, pre-push, commit-msg]
+
+repos:
+  # Kotlin formatting and linting
+  - repo: local
+    hooks:
+      - id: ktlint
+        name: ktlint
+        description: "A Kotlin linter with built-in formatter"
+        entry: ./gradlew ktlintCheck
+        language: system
+        types: [kotlin]
+        pass_filenames: false
+
+      - id: ktlint-format
+        name: ktlint-format
+        description: "Format Kotlin code"
+        entry: ./gradlew ktlintFormat
+        language: system
+        types: [kotlin]
+        pass_filenames: false
+
+  # General file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+        name: Trim Trailing Whitespace
+
+      - id: end-of-file-fixer
+        name: Fix End of Files
+
+      - id: check-yaml
+        name: Check YAML
+
+      - id: check-json
+        name: Check JSON
+
+      - id: check-merge-conflict
+        name: Check for merge conflicts
+
+      - id: check-added-large-files
+        name: Check for large files
+        args: [--maxkb=500]
+
+  # Commit message linting
+  - repo: https://github.com/commitizen-tools/commitizen
+    rev: v3.13.0
+    hooks:
+      - id: commitizen
+        name: Commitizen Check
+        description: "Check commit message follows Conventional Commits"
+        stages: [commit-msg]
