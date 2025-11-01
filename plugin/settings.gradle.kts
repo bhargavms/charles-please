@@ -1,4 +1,4 @@
-rootProject.name = "charlesplease"
+rootProject.name = "charlesplease-plugin"
 
 pluginManagement {
     repositories {
@@ -14,8 +14,9 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
 }
-
-// Include plugin and sample as composite builds
-includeBuild("plugin")
-includeBuild("sample")

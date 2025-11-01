@@ -2,6 +2,9 @@
 # Kotlin
 kotlin = "2.2.0"
 
+# Android
+android-gradle-plugin = "8.2.0"
+
 # Gradle plugins
 gradle-plugin-publish = "1.2.1"
 ktlint = "12.1.0"
@@ -31,6 +34,10 @@ mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
 [plugins]
 # Kotlin
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-android = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
+
+# Android
+android-application = { id = "com.android.application", version.ref = "android-gradle-plugin" }
 
 # Gradle plugins
 java-gradle-plugin = { id = "java-gradle-plugin" }
