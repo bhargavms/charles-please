@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     // Use plugin from the root project (composite build) - no version needed
-    id("dev.mogra.charlesplease")
+    id("io.github.bhargavms.gradle.charlesplease")
     alias(libs.plugins.ktlint)
 }
 

@@ -6,7 +6,7 @@ plugins {
     alias(libs.plugins.ktlint)
 }
 
-group = "dev.mogra"
+group = "io.github.bhargavms"
 version = "1.0.0"
 
 dependencies {
@@ -16,23 +16,29 @@ dependencies {
 }
 
 gradlePlugin {
+    website.set("https://github.com/bhargavms/charles-please")
+    vcsUrl.set("https://github.com/bhargavms/charles-please")
     plugins {
-        create("charlesPlease") {
-            id = "dev.mogra.charlesplease"
-            implementationClass = "dev.mogra.charlesplease.CharlesPleasePlugin"
-            displayName = "Charles Please"
+        create("charlesplease") {
+            id = "io.github.bhargavms.gradle.charlesplease"
+            implementationClass =
+                "dev.mogra.charlesplease.CharlesPleasePlugin"
+            displayName = "Set up Charles proxy"
             description =
-                "Gradle plugin to automatically configure Android device proxy settings via ADB for Charles Proxy"
+                "A Gradle plugin to apply and clear Proxy settings on" +
+                "connected Android devices, with auto discover for charles proxy setup"
+            tags.set(
+                listOf(
+                    "proxy",
+                    "charles",
+                    "android",
+                    "emulator",
+                    "adb proxy",
+                ),
+            )
         }
     }
 }
-
-// Plugin bundle configuration (commented out for testing)
-// pluginBundle {
-//     website = "https://github.com/mogra/charlesplease"
-//     vcsUrl = "https://github.com/mogra/charlesplease.git"
-//     tags = listOf("android", "adb", "proxy", "charles", "debugging")
-// }
 
 java {
     toolchain {
