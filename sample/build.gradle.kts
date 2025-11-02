@@ -65,3 +65,18 @@ charlesPlease {
     // pacUrl.set("http://proxy.example.com/proxy.pac")
     // serial.set("emulator-5554") // Target specific device
 }
+ktlint {
+    version.set("1.2.1")
+    debug.set(true)
+    verbose.set(true)
+    android.set(false)
+    outputToConsole.set(true)
+    outputColorName.set("RED")
+    ignoreFailures.set(false)
+    enableExperimentalRules.set(false)
+
+    filter {
+        exclude("**/generated/**")
+        include("**/kotlin/**")
+    }
+}
