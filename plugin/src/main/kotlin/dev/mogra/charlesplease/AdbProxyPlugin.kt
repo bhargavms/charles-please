@@ -15,7 +15,7 @@ import org.gradle.api.Project
  * Apply the plugin in your `build.gradle.kts`:
  * ```kotlin
  * plugins {
- *     id("dev.mogra.charlesplease")
+ *     id("io.github.bhargavms.gradle.charlesplease")
  * }
  * ```
  *

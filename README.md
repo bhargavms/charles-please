@@ -16,7 +16,7 @@ A Gradle plugin for automatically configuring Android device proxy settings via 
 
 ```kotlin
 plugins {
-    id("dev.mogra.charlesplease")
+    id("io.github.bhargavms.gradle.charlesplease")
 }
 ```
 
@@ -138,7 +138,7 @@ Then in your project:
 
 ```kotlin
 plugins {
-    id("dev.mogra.charlesplease") version "1.0.0"
+    id("io.github.bhargavms.gradle.charlesplease") version "1.0.0"
 }
 ```
 
