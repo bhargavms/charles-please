@@ -8,7 +8,6 @@ tasks.ktlintFormat {
             .filterNot(::isPlainDir)
             .map { "${it.path}:ktlintFormat" },
     )
-    dependsOn()
 }
 
 tasks.ktlintCheck {
@@ -17,15 +16,22 @@ tasks.ktlintCheck {
             .filterNot(::isPlainDir)
             .map { "${it.path}:ktlintCheck" },
     )
-    dependsOn()
 }
 
 fun isPlainDir(project: Project) = !project.file("build.gradle").exists() && !project.file("build.gradle.kts").exists()
 
-tasks.named("ktlintFormat") {
+tasks.ktlintFormat {
     dependsOn(gradle.includedBuilds.map { it.task(":ktlintFormat") })
 }
 
-tasks.named("ktlintCheck") {
+tasks.ktlintCheck {
     dependsOn(gradle.includedBuilds.map { it.task(":ktlintCheck") })
+}
+
+tasks.register("clean") {
+    dependsOn(
+        subprojects.filterNot(::isPlainDir)
+            .map { "${it.path}:clean" },
+    )
+    dependsOn(gradle.includedBuilds.map { it.task(":clean") })
 }
