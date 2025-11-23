@@ -1,5 +1,10 @@
 plugins {
     alias(libs.plugins.ktlint)
+    alias(libs.plugins.better.junit.aggregator)
+}
+
+betterAggregator {
+    outputDir.set("${project.layout.buildDirectory.dir("test-results/test").get().asFile.absolutePath}")
 }
 
 tasks.ktlintFormat {
@@ -35,6 +40,7 @@ tasks.register("test") {
             .map { "${it.path}:test" },
     )
     dependsOn(gradle.includedBuilds.map { it.task(":test") })
+    finalizedBy("aggregateJUnitXMLReports")
 }
 
 tasks.register("clean") {

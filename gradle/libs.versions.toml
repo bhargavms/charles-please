@@ -8,6 +8,7 @@ android-gradle-plugin = "8.2.0"
 # Gradle plugins
 gradle-plugin-publish = "1.2.1"
 ktlint = "12.1.0"
+better-junit-aggregator = "1.0.0"
 
 # Testing
 junit-jupiter = "5.10.0"
@@ -44,6 +45,7 @@ java-gradle-plugin = { id = "java-gradle-plugin" }
 maven-publish = { id = "maven-publish" }
 gradle-plugin-publish = { id = "com.gradle.plugin-publish", version.ref = "gradle-plugin-publish" }
 ktlint = { id = "org.jlleitschuh.gradle.ktlint", version.ref = "ktlint" }
+better-junit-aggregator = { id = "io.github.bhargavms.junit.better-aggregator", version.ref = "better-junit-aggregator" }
 
 [bundles]
 # Test bundles
