@@ -1,15 +1,24 @@
 name: 'Run Pre-commit'
-description: 'Setup Python and run pre-commit hooks'
+description: 'Setup Python, Gradle, and run pre-commit hooks'
 
 inputs:
   python-version:
     description: 'Python version to use'
     required: false
     default: '3.11'
+  java-version:
+    description: 'Java version to use'
+    required: false
+    default: '21'
 
 runs:
   using: 'composite'
   steps:
+    - name: Setup Gradle
+      uses: ./.github/actions/setup-gradle
+      with:
+        java-version: ${{ inputs.java-version }}
+
     - name: Set up Python
       uses: actions/setup-python@v5
       with:
