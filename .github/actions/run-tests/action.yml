@@ -17,9 +17,7 @@ runs:
       shell: bash
 
     - name: Generate test report
-      uses: dorny/test-reporter@v1
+      uses: mikepenz/action-junit-report@v5
       if: success() || failure()
       with:
-        name: Gradle Tests
-        path: build/test-results/test/aggregated-test-report.xml
-        reporter: java-junit
+        report_paths: build/test-results/test/aggregated-test-report.xml
