@@ -1,9 +1,9 @@
 package dev.mogra.charlesplease
 
+import io.mockk.mockk
 import org.gradle.api.logging.Logger
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
-import org.mockito.kotlin.mock
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
 
@@ -15,7 +15,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should execute single command successfully`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         var executed = false
         val command =
@@ -36,7 +36,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should execute command chain successfully`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         val executionOrder = mutableListOf<Int>()
 
@@ -70,7 +70,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should propagate command execution errors`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         val command =
             object : Command {
@@ -88,7 +88,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should stop chain execution on first error`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         val executionOrder = mutableListOf<Int>()
 
@@ -125,7 +125,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should maintain command history`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         val command1 =
             object : Command {
@@ -150,7 +150,7 @@ class CommandExecutorIntegrationTest {
     @Test
     fun `should clear command history`() {
         // Given
-        val logger = mock<Logger>()
+        val logger = mockk<Logger>(relaxed = true)
         val executor = CommandExecutor(logger)
         val command =
             object : Command {

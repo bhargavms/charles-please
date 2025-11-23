@@ -28,6 +28,15 @@ tasks.ktlintCheck {
     dependsOn(gradle.includedBuilds.map { it.task(":ktlintCheck") })
 }
 
+tasks.register("test") {
+    dependsOn(
+        subprojects
+            .filterNot(::isPlainDir)
+            .map { "${it.path}:test" },
+    )
+    dependsOn(gradle.includedBuilds.map { it.task(":test") })
+}
+
 tasks.register("clean") {
     dependsOn(
         subprojects.filterNot(::isPlainDir)

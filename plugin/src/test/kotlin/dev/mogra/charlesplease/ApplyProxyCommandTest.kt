@@ -5,16 +5,29 @@ import io.mockk.mockk
 import org.gradle.api.logging.Logger
 import org.gradle.api.provider.Property
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 import kotlin.test.assertNotNull
-import kotlin.test.assertTrue
 
 /**
- * Integration tests for CommandFactory.
- * Uses real classes with mocked configuration properties.
+ * Unit tests for ApplyProxyCommand.
+ * Tests the command creation and execution logic with mocked dependencies.
  */
-class CommandFactoryIntegrationTest {
+class ApplyProxyCommandTest {
     @Test
-    fun `should create apply proxy command with manual configuration`() {
+    fun `should throw exception when host is empty and auto-discover is disabled`() {
+        // Given
+        val logger = mockk<Logger>()
+        val config = createTestConfig(host = "", autoDiscover = false)
+
+        // When & Then
+        assertThrows<RuntimeException> {
+            val command = ApplyProxyCommand(logger, config)
+            command.execute()
+        }
+    }
+
+    @Test
+    fun `should create command with manual configuration`() {
         // Given
         val logger = mockk<Logger>()
         val config =
@@ -23,18 +36,16 @@ class CommandFactoryIntegrationTest {
                 port = 8888,
                 autoDiscover = false,
             )
-        val factory = CommandFactory(logger, config)
 
         // When
-        val command = factory.createApplyProxyCommand()
+        val command = ApplyProxyCommand(logger, config)
 
         // Then
         assertNotNull(command)
-        assertTrue(command is ApplyProxyCommand)
     }
 
     @Test
-    fun `should create apply proxy command with auto-discover enabled`() {
+    fun `should create command with auto-discover enabled`() {
         // Given
         val logger = mockk<Logger>()
         val config =
@@ -43,47 +54,66 @@ class CommandFactoryIntegrationTest {
                 port = 8888,
                 autoDiscover = true,
             )
-        val factory = CommandFactory(logger, config)
 
         // When
-        val command = factory.createApplyProxyCommand()
+        val command = ApplyProxyCommand(logger, config)
 
         // Then
         assertNotNull(command)
-        assertTrue(command is ApplyProxyCommand)
     }
 
     @Test
-    fun `should create clear proxy command`() {
+    fun `should create command with PAC URL`() {
         // Given
         val logger = mockk<Logger>()
-        val config = createTestConfig()
-        val factory = CommandFactory(logger, config)
+        val config =
+            createTestConfig(
+                host = "192.168.1.100",
+                port = 8888,
+                pacUrl = "http://proxy.example.com/proxy.pac",
+            )
 
         // When
-        val command = factory.createClearProxyCommand()
+        val command = ApplyProxyCommand(logger, config)
 
         // Then
         assertNotNull(command)
-        assertTrue(command is ClearProxyCommand)
     }
 
     @Test
-    fun `should create commands with device serial`() {
+    fun `should create command with bypass list`() {
         // Given
         val logger = mockk<Logger>()
-        val config = createTestConfig(serial = "emulator-5554")
-        val factory = CommandFactory(logger, config)
+        val config =
+            createTestConfig(
+                host = "192.168.1.100",
+                port = 8888,
+                bypass = "localhost,127.0.0.1",
+            )
 
         // When
-        val applyCommand = factory.createApplyProxyCommand()
-        val clearCommand = factory.createClearProxyCommand()
+        val command = ApplyProxyCommand(logger, config)
 
         // Then
-        assertNotNull(applyCommand)
-        assertNotNull(clearCommand)
-        assertTrue(applyCommand is ApplyProxyCommand)
-        assertTrue(clearCommand is ClearProxyCommand)
+        assertNotNull(command)
+    }
+
+    @Test
+    fun `should create command with device serial`() {
+        // Given
+        val logger = mockk<Logger>()
+        val config =
+            createTestConfig(
+                host = "192.168.1.100",
+                port = 8888,
+                serial = "emulator-5554",
+            )
+
+        // When
+        val command = ApplyProxyCommand(logger, config)
+
+        // Then
+        assertNotNull(command)
     }
 
     private fun createTestConfig(
