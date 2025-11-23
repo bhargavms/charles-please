@@ -6,9 +6,6 @@ A Gradle plugin for automatically configuring Android device proxy settings via 
 
 - **Auto-discovery**: Automatically detect Charles proxy host and port
 - **Manual configuration**: Set custom proxy settings
-- **PAC support**: Configure Proxy Auto-Configuration URLs
-- **Device selection**: Target specific Android devices by serial
-- **Bypass lists**: Configure proxy exclusions
 
 ## Usage
 
