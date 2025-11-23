@@ -1,0 +1,22 @@
+name: 'Setup Gradle'
+description: 'Setup Gradle environment with JDK and make gradlew executable'
+
+inputs:
+  java-version:
+    description: 'Java version to use'
+    required: false
+    default: '21'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up JDK
+      uses: actions/setup-java@v4
+      with:
+        java-version: ${{ inputs.java-version }}
+        distribution: 'temurin'
+        cache: 'gradle'
+
+    - name: Make gradlew executable
+      run: chmod +x ./gradlew
+      shell: bash

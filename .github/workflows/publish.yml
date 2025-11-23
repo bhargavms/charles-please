@@ -5,22 +5,39 @@ on:
     types: [published]
 
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout code
+      uses: actions/checkout@v4
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-          cache: gradle
+    - name: Setup Gradle
+      uses: ./.github/actions/setup-gradle
 
-      - name: Grant execute permission for gradlew
-        run: chmod +x gradlew
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
+
+  pre-commit:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Run Pre-commit
+      uses: ./.github/actions/run-pre-commit
+
+  publish:
+    needs: [test, pre-commit]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Gradle
+        uses: ./.github/actions/setup-gradle
 
       - name: Publish plugin
         run: ./gradlew publishPlugins

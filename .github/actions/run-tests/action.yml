@@ -1,0 +1,25 @@
+name: 'Run Tests'
+description: 'Run ktlint check, tests, and build'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Run ktlint check
+      run: ./gradlew ktlintCheck
+      shell: bash
+
+    - name: Run tests
+      run: ./gradlew test
+      shell: bash
+
+    - name: Build project
+      run: ./gradlew build
+      shell: bash
+
+    - name: Generate test report
+      uses: dorny/test-reporter@v1
+      if: success() || failure()
+      with:
+        name: Gradle Tests
+        path: build/test-results/test/TEST-*.xml
+        reporter: java-junit

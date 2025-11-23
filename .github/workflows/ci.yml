@@ -14,29 +14,8 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Set up JDK
-      uses: actions/setup-java@v4
-      with:
-        java-version: '21'
-        distribution: 'temurin'
-        cache: 'gradle'
+    - name: Setup Gradle
+      uses: ./.github/actions/setup-gradle
 
-    - name: Make gradlew executable
-      run: chmod +x ./gradlew
-
-    - name: Run ktlint check
-      run: ./gradlew ktlintCheck
-
-    - name: Run tests
-      run: ./gradlew test
-
-    - name: Build project
-      run: ./gradlew build
-
-    - name: Generate test report
-      uses: dorny/test-reporter@v1
-      if: success() || failure()
-      with:
-        name: Gradle Tests
-        path: build/test-results/test/TEST-*.xml
-        reporter: java-junit
+    - name: Run Tests
+      uses: ./.github/actions/run-tests
