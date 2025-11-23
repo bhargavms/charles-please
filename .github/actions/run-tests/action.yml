@@ -21,3 +21,4 @@ runs:
       if: success() || failure()
       with:
         report_paths: build/test-results/test/aggregated-test-report.xml
+        token: ${{ secrets.GITHUB_TOKEN }}
